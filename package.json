@@ -11,6 +11,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:e2e": "playwright test",
+    "test:e2e:prod": "PLAYWRIGHT_BASE_URL=https://mathe-heldin-app.netlify.app playwright test",
     "preview": "vite preview"
   },
   "dependencies": {
