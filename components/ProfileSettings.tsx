@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { UserProfile, saveProfile } from '../services/persistence';
+import { UserProfile } from '../types';
+import { saveProfile } from '../services/persistence';
 
 interface ProfileSettingsProps {
     initialProfile: UserProfile | null;
@@ -10,10 +11,11 @@ interface ProfileSettingsProps {
 const ProfileSettings: React.FC<ProfileSettingsProps> = ({ initialProfile, onSave, onClose }) => {
     const [name, setName] = useState(initialProfile?.name || '');
     const [birthday, setBirthday] = useState(initialProfile?.birthday || '');
+    const [language, setLanguage] = useState(initialProfile?.language || '');
 
     const handleSave = () => {
         if (!name.trim()) return;
-        const newProfile: UserProfile = { name, birthday };
+        const newProfile: UserProfile = { name, birthday, language };
         saveProfile(newProfile);
         onSave(newProfile);
         onClose();
@@ -55,6 +57,24 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ initialProfile, onSav
                             onChange={(e) => setBirthday(e.target.value)}
                             className="w-full bg-pink-50 border-2 border-pink-100 rounded-xl px-4 py-3 font-bold text-pink-900 focus:border-pink-400 focus:outline-none"
                         />
+                    </div>
+
+                    <div>
+                        <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 ml-1">Zweitsprache (optional)</label>
+                        <select
+                            value={language}
+                            onChange={(e) => setLanguage(e.target.value)}
+                            className="w-full bg-green-50 border-2 border-green-100 rounded-xl px-4 py-3 font-bold text-green-900 focus:border-green-400 focus:outline-none"
+                        >
+                            <option value="">Keine</option>
+                            <option value="en">🇬🇧 Englisch</option>
+                            <option value="tr">🇹🇷 Türkisch</option>
+                            <option value="ar">🇸🇦 Arabisch</option>
+                            <option value="ru">🇷🇺 Russisch</option>
+                            <option value="uk">🇺🇦 Ukrainisch</option>
+                            <option value="es">🇪🇸 Spanisch</option>
+                            <option value="fr">🇫🇷 Französisch</option>
+                        </select>
                     </div>
 
                     <button

@@ -1,4 +1,4 @@
-import { AppState, DifficultyLevel, MathProblem } from '../types';
+import { DifficultyLevel, UserProfile } from '../types';
 
 const STORAGE_KEYS = {
     UNLOCKED_LEVELS: 'mathe_heldin_unlocked_levels',
@@ -7,11 +7,6 @@ const STORAGE_KEYS = {
     PROFILE: 'mathe_heldin_profile',
     BANNER_DISMISSED: 'mathe_heldin_banner_dismissed'
 };
-
-export interface UserProfile {
-    name: string;
-    birthday: string;
-}
 
 export interface UserHistoryItem {
     date: string;

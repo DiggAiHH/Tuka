@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["node", "jest", "@testing-library/jest-dom"]
+  },
+  "include": [
+    "components/__tests__/**/*.ts",
+    "components/__tests__/**/*.tsx",
+    "services/__tests__/**/*.ts",
+    "services/__tests__/**/*.tsx"
+  ],
+  "exclude": ["node_modules", "dist", "e2e", "playwright.config.ts"]
+}

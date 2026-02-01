@@ -1,8 +1,7 @@
-
-import React, { useState } from 'react';
-import { AppState, MathProblem, DifficultyLevel } from './types';
+import React, { useState, useEffect } from 'react';
+import { AppState, MathProblem, DifficultyLevel, UserProfile } from './types';
 import { analyzeAndLevelUp, generateLevelProblems, generateKangarooProblems } from './services/geminiService';
-import { loadUnlockedLevels, saveUnlockedLevels, saveHistory, loadHistory, UserProfile, loadProfile, isBannerDismissed } from './services/persistence';
+import { loadUnlockedLevels, saveUnlockedLevels, saveHistory, loadProfile, isBannerDismissed } from './services/persistence';
 import Header from './components/Header';
 import Home from './components/Home';
 import Uploader from './components/Uploader';
@@ -30,8 +29,8 @@ const App: React.FC = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [showBanner, setShowBanner] = useState(() => !isBannerDismissed());
 
-  // Save unlocked levels whenever they change
-  React.useEffect(() => {
+  // Save unlocked levels
+  useEffect(() => {
     saveUnlockedLevels(unlockedLevels);
   }, [unlockedLevels]);
 
@@ -39,7 +38,7 @@ const App: React.FC = () => {
     setIsLoading(true);
     setCurrentState(AppState.ANALYZING);
     try {
-      const data = await analyzeAndLevelUp(base64);
+      const data = await analyzeAndLevelUp(base64, userProfile);
       setTopic(data.topic);
       setProblems(data.initialProblems);
       setCurrentState(AppState.LEVEL_MAP);
@@ -61,7 +60,7 @@ const App: React.FC = () => {
     setIsLoading(true);
     setCurrentLevel(level);
     try {
-      const levelProblems = await generateLevelProblems(topic, level);
+      const levelProblems = await generateLevelProblems(topic, level, userProfile);
       setProblems(levelProblems);
       setCurrentState(level === DifficultyLevel.PRUEFUNG ? AppState.EXAM : AppState.LEARNING);
     } catch (error) {
@@ -74,7 +73,7 @@ const App: React.FC = () => {
   const startKangarooTraining = async () => {
     setIsLoading(true);
     try {
-      const kangarooProblems = await generateKangarooProblems();
+      const kangarooProblems = await generateKangarooProblems(userProfile);
       setProblems(kangarooProblems);
       setTopic("Känguru-Wettbewerb Training 🦘");
       setCurrentState(AppState.EXAM);
@@ -134,15 +133,18 @@ const App: React.FC = () => {
       <main className="flex-1 container mx-auto px-4 py-8 max-w-4xl">
         {currentState === AppState.HOME && (
           <Home
+            userProfile={userProfile}
+            onStart={(t) => startStandardTraining()} // Standard Trigger
             onStartUpload={() => setCurrentState(AppState.UPLOAD)}
-            onStartStandard={startStandardTraining}
             onStartKangaroo={startKangarooTraining}
-            onOpenGuide={() => setCurrentState(AppState.GUIDE)}
+            onEditProfile={() => setIsProfileOpen(true)}
+            onShowGuide={() => setCurrentState(AppState.GUIDE)}
+            onShowFeatures={() => setCurrentState(AppState.GUIDE)} // Merged into Guide
           />
         )}
 
         {currentState === AppState.GUIDE && (
-          <UsageGuide onBack={() => setCurrentState(AppState.HOME)} />
+          <UsageGuide onClose={() => setCurrentState(AppState.HOME)} />
         )}
 
         {currentState === AppState.UPLOAD && <Uploader onUpload={handleImageUpload} />}
@@ -164,10 +166,6 @@ const App: React.FC = () => {
           </div>
         )}
 
-        {currentState === AppState.GUIDE && (
-          <UsageGuide onBack={() => setCurrentState(AppState.HOME)} />
-        )}
-
         {currentState === AppState.LEVEL_MAP && (
           <LevelMap
             topic={topic}
@@ -181,6 +179,8 @@ const App: React.FC = () => {
             problems={problems}
             topic={topic}
             onComplete={completeLearning}
+            userProfile={userProfile || undefined}
+            onUpdateProfile={(p) => setUserProfile(p)}
           />
         )}
 
@@ -203,7 +203,7 @@ const App: React.FC = () => {
         onClose={() => setIsShareModalOpen(false)}
       />
 
-      {/* Floating Install Banner (only on Home or if needed globally) */}
+      {/* Floating Install Banner */}
       {showBanner && currentState === AppState.HOME && (
         <InstallBanner onDismiss={() => setShowBanner(false)} />
       )}

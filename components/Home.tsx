@@ -1,15 +1,19 @@
 
 import React, { useState, useEffect } from 'react';
 import InstallGuide from './InstallGuide';
+import { UserProfile } from '../types';
 
 interface HomeProps {
-  onStartUpload: () => void;
-  onStartStandard: () => void;
-  onStartKangaroo: () => void;
-  onOpenGuide: () => void;
+  userProfile: UserProfile | null;
+  onStart: (topic: string) => void; // Standard Training
+  onStartUpload?: () => void; // Legacy or specific
+  onStartKangaroo?: () => void; // Legacy or specific
+  onEditProfile: () => void;
+  onShowGuide: () => void;
+  onShowFeatures: () => void;
 }
 
-const Home: React.FC<HomeProps> = ({ onStartUpload, onStartStandard, onStartKangaroo, onOpenGuide }) => {
+const Home: React.FC<HomeProps> = ({ userProfile, onStart, onStartUpload, onStartKangaroo, onEditProfile, onShowGuide, onShowFeatures }) => {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
   useEffect(() => {
@@ -21,19 +25,10 @@ const Home: React.FC<HomeProps> = ({ onStartUpload, onStartStandard, onStartKang
     return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
 
-  const handleInstallClick = async () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      setDeferredPrompt(null);
-    }
-  };
-
   return (
     <div className="max-w-5xl mx-auto text-center space-y-10 py-6 animate-in fade-in slide-in-from-bottom-4 duration-1000">
 
-      {/* Hero-Sektion v17 */}
+      {/* Hero-Sektion v19 */}
       <div className="relative overflow-hidden bg-gradient-to-br from-yellow-400 to-orange-500 rounded-[3rem] p-10 shadow-2xl border-4 border-white text-white">
         <div className="absolute top-0 right-0 -mr-10 -mt-10 w-40 h-40 bg-white/20 rounded-full blur-3xl"></div>
         <div className="relative z-10 space-y-4">
@@ -42,31 +37,37 @@ const Home: React.FC<HomeProps> = ({ onStartUpload, onStartStandard, onStartKang
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
             </span>
-            <span>Version 17.0 • App-Modus bereit</span>
+            <span>App-Modus bereit</span>
           </div>
 
           <h1 className="text-5xl md:text-7xl font-kids leading-tight drop-shadow-md text-white">
-            Tukas <span className="text-blue-700">Mathe-Welt!</span> 👑
+            Hallo <span className="text-blue-700">{userProfile?.name ? userProfile.name.split(' ')[0] : "Heldin"}</span>! 👋
           </h1>
-          <p className="text-xl md:text-2xl font-medium max-w-2xl mx-auto text-orange-900/80 mb-6">
-            Bereit für dein nächstes Mathe-Abenteuer?
+          <p className="text-xl md:text-2xl font-medium max-w-2xl mx-auto text-orange-900/80 mb-6 font-kids">
+            Tukas Mathe-Welt erwartet dich! 👑
           </p>
 
-          <button
-            onClick={onOpenGuide}
-            className="bg-white/20 hover:bg-white/30 text-white border-2 border-white/50 px-6 py-2 rounded-full font-bold text-sm backdrop-blur-sm transition-all active:scale-95"
-          >
-            📚 Wie funktioniert das?
-          </button>
+          <div className="flex justify-center space-x-3">
+            <button
+              onClick={onShowFeatures}
+              className="bg-purple-600/80 hover:bg-purple-700 text-white border-2 border-white/50 px-6 py-2 rounded-full font-bold text-sm backdrop-blur-sm transition-all active:scale-95 flex items-center gap-2"
+            >
+              ✨ Was ist neu?
+            </button>
+            <button
+              onClick={onShowGuide}
+              className="bg-white/20 hover:bg-white/30 text-white border-2 border-white/50 px-6 py-2 rounded-full font-bold text-sm backdrop-blur-sm transition-all active:scale-95"
+            >
+              📚 Hilfe
+            </button>
+          </div>
         </div>
       </div>
-
-
 
       {/* Haupt-Menü */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
         <button
-          onClick={onStartStandard}
+          onClick={() => onStart('leicht')}
           className="group bg-white p-10 rounded-[3.5rem] shadow-xl border-b-[12px] border-green-400 flex flex-col items-center space-y-6 active:scale-95 transition-all hover:-translate-y-2"
         >
           <div className="text-8xl group-hover:scale-110 transition-transform">🚀</div>
@@ -91,7 +92,7 @@ const Home: React.FC<HomeProps> = ({ onStartUpload, onStartStandard, onStartKang
       </div>
 
       <p className="text-[10px] text-gray-300 font-bold tracking-widest uppercase">
-        Mathe-Heldin v17.0 • PWA Enabled • Offline Support
+        Mathe-Heldin v19.0 • Made with ❤️ by Dad
       </p>
     </div>
   );

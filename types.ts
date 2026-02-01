@@ -6,6 +6,12 @@ export enum DifficultyLevel {
   PRUEFUNG = 'Prüfung'
 }
 
+export interface UserProfile {
+  name: string;
+  birthday: string;
+  language?: string; // e.g. 'en', 'tr', 'ar'
+}
+
 export interface MathProblem {
   id: string;
   question: string;
@@ -13,6 +19,14 @@ export interface MathProblem {
   options?: string[];
   steps: string[];
   explanation: string;
+  explanation_second_lang?: string; // Legacy/Fallback
+  question_second_lang?: string;
+  explanation_blocks?: { de: string; second_lang: string; }[];
+  steps_blocks?: { de: string; second_lang: string; }[];
+  hints_blocks?: { de: string; second_lang: string; }[];
+  options_second_lang?: string[]; // Parallel to options
+  feedback_correct?: { de: string; second_lang: string; };
+  feedback_incorrect?: { de: string; second_lang: string; };
   hints: string[];
 }
 
