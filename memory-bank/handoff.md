@@ -23,15 +23,16 @@
   - `npm run test:e2e:prod`
 
 ## Offene Punkte (Blocker + nächste Schritte)
-1. **Git Push**: Lokal ausführen:
-   ```bash
-   cd /Users/mm/Downloads/mathe-heldin
-   git remote add origin https://github.com/DiggAiHH/Tuka.git
-   git push -u origin main
-   ```
+1. **Git Push**: Lokal ausführen (falls noch nicht):
+  ```bash
+  cd /Users/mm/Downloads/mathe-heldin
+  git remote add origin https://github.com/DiggAiHH/Tuka.git
+  git push -u origin main
+  ```
 2. **Codespace Setup** (nach Git Push):
    - GitHub: Repo öffnen → Code → Codespaces → Create codespace on main
    - Oder: `gh codespace create -r DiggAiHH/Tuka -b main && gh codespace code -r DiggAiHH/Tuka`
+   - Hinweis: Ein `.devcontainer` wurde hinzugefügt (`.devcontainer/devcontainer.json`). Codespaces und Remote‑Containers erkennen die Definition automatisch und verwenden die definierte Node‑Image + `postCreateCommand`.
 3. **Prod-Konfiguration**: In Netlify prüfen/setzen:
   - `GEMINI_API_KEY` als Environment Variable (wird serverseitig in `/.netlify/functions/gemini` genutzt)
 4. **Qualität/Compliance (nächste Iteration)**:

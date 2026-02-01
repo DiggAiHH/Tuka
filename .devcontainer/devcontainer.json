@@ -1,0 +1,16 @@
+{
+  "name": "Tukas Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:18",
+  "features": {},
+  "postCreateCommand": "npm ci && npm run typecheck",
+  "forwardPorts": [4173],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "ms-vscode.vscode-typescript-next"
+      ]
+    }
+  }
+}
