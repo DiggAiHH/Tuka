@@ -1,0 +1,30 @@
+
+{
+  "id": "com.tuka.matheheldin.v18",
+  "short_name": "Mathe-Heldin",
+  "name": "Tukas Mathe-Welt",
+  "description": "Die ultimative Mathe-Lern-App für Tuka",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/5351/5351493.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/5351/5351493.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    }
+  ],
+  "start_url": "./index.html",
+  "scope": ".",
+  "display": "standalone",
+  "display_override": ["standalone", "fullscreen"],
+  "orientation": "portrait",
+  "theme_color": "#f59e0b",
+  "background_color": "#fffaf0",
+  "categories": ["education", "kids"],
+  "lang": "de-DE"
+}

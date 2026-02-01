@@ -1,0 +1,10 @@
+
+{
+  "appId": "com.tuka.matheheldin",
+  "appName": "Tukas Mathe-Welt",
+  "webDir": ".",
+  "bundledWebRuntime": false,
+  "server": {
+    "allowNavigation": ["*"]
+  }
+}
