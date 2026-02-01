@@ -11,10 +11,15 @@ interface HomeProps {
   onEditProfile: () => void;
   onShowGuide: () => void;
   onShowFeatures: () => void;
+  onShowPrivacy?: () => void;
+  onOpenParent?: () => void;
 }
 
-const Home: React.FC<HomeProps> = ({ userProfile, onStart, onStartUpload, onStartKangaroo, onEditProfile, onShowGuide, onShowFeatures }) => {
+const Home: React.FC<HomeProps> = ({ userProfile, onStart, onStartUpload, onStartKangaroo, onEditProfile, onShowGuide, onShowFeatures, onShowPrivacy, onOpenParent }) => {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
+  const firstName = userProfile?.name ? userProfile.name.split(' ')[0] : '';
+  const fallbackName = userProfile?.gender === 'boy' ? 'Held' : 'Heldin';
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -41,7 +46,7 @@ const Home: React.FC<HomeProps> = ({ userProfile, onStart, onStartUpload, onStar
           </div>
 
           <h1 className="text-5xl md:text-7xl font-kids leading-tight drop-shadow-md text-white">
-            Hallo <span className="text-blue-700">{userProfile?.name ? userProfile.name.split(' ')[0] : "Heldin"}</span>! 👋
+            Hallo <span className="text-blue-700">{firstName || fallbackName}</span>! 👋
           </h1>
           <p className="text-xl md:text-2xl font-medium max-w-2xl mx-auto text-orange-900/80 mb-6 font-kids">
             Tukas Mathe-Welt erwartet dich! 👑
@@ -91,9 +96,38 @@ const Home: React.FC<HomeProps> = ({ userProfile, onStart, onStartUpload, onStar
         </button>
       </div>
 
-      <p className="text-[10px] text-gray-300 font-bold tracking-widest uppercase">
-        Mathe-Heldin v19.0 • Made with ❤️ by Dad
-      </p>
+      <div className="text-[10px] text-gray-300 font-bold tracking-widest uppercase space-y-2">
+        <div>
+          <div>Made with ❤️ by Dad</div>
+          <div>DiggAi 2026</div>
+        </div>
+        <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
+          <a
+            href="mailto:laith.alshdaifat@hotmail.com?subject=Tukas%20Mathe-Welt%20Feedback"
+            className="hover:text-gray-400 transition-colors"
+          >
+            Kontakt: laith.alshdaifat@hotmail.com
+          </a>
+          {onShowPrivacy && (
+            <button
+              type="button"
+              onClick={onShowPrivacy}
+              className="hover:text-gray-400 transition-colors"
+            >
+              Datenschutz
+            </button>
+          )}
+          {onOpenParent && (
+            <button
+              type="button"
+              onClick={onOpenParent}
+              className="hover:text-gray-400 transition-colors"
+            >
+              Elternbereich
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

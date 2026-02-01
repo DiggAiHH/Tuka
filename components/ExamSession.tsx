@@ -1,17 +1,21 @@
 
 import React, { useState } from 'react';
-import { MathProblem } from '../types';
+import { MathProblem, UserProfile } from '../types';
 
 interface ExamSessionProps {
   problems: MathProblem[];
   onFinish: (score: number, total: number, history: any[]) => void;
+  userProfile?: UserProfile;
 }
 
-const ExamSession: React.FC<ExamSessionProps> = ({ problems, onFinish }) => {
+const ExamSession: React.FC<ExamSessionProps> = ({ problems, onFinish, userProfile }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userAnswer, setUserAnswer] = useState('');
   const [history, setHistory] = useState<any[]>([]);
   const [score, setScore] = useState(0);
+
+  const firstName = userProfile?.name ? userProfile.name.split(' ')[0] : '';
+  const childName = firstName || 'Tuka';
 
   const currentProblem = problems[currentIndex];
 
@@ -51,7 +55,7 @@ const ExamSession: React.FC<ExamSessionProps> = ({ problems, onFinish }) => {
         <h2 className="text-3xl font-kids text-purple-600">
           {currentProblem.options ? "🦘 Känguru-Herausforderung!" : "Das große Mathe-Quiz! 🏆"}
         </h2>
-        <p className="text-gray-500 italic">Tuka, du schaffst das!</p>
+        <p className="text-gray-500 italic">{childName}, du schaffst das!</p>
       </div>
 
       <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border-4 border-purple-100">

@@ -1,14 +1,20 @@
 
 import React from 'react';
+import { UserProfile } from '../types';
 
 interface ResultsProps {
   results: { score: number, total: number, history: any[] };
   onRestart: () => void;
   onPracticeAgain: () => void;
   onCorrectWrong: () => void;
+  userProfile?: UserProfile;
 }
 
-const Results: React.FC<ResultsProps> = ({ results, onRestart, onPracticeAgain, onCorrectWrong }) => {
+const Results: React.FC<ResultsProps> = ({ results, onRestart, onPracticeAgain, onCorrectWrong, userProfile }) => {
+  const firstName = userProfile?.name ? userProfile.name.split(' ')[0] : '';
+  const childName = firstName || 'Tuka';
+  const possessive = `${childName}s`;
+
   const percentage = (results.score / results.total) * 100;
   const wrongCount = results.total - results.score;
   
@@ -23,10 +29,10 @@ const Results: React.FC<ResultsProps> = ({ results, onRestart, onPracticeAgain, 
   else if (percentage >= 25) { grade = 5; colorClass = "text-red-400"; starIcon = "💪"; }
 
   const getEncouragement = () => {
-    if (grade === 1) return "Tuka, du bist eine echte Mathe-Königin! 👑🥇";
-    if (grade === 2) return "Tuka, super gemacht! Nur ein kleiner Schritt bis zur 1! 🥈";
-    if (grade === 3) return "Gut gemacht, Tuka! Du wirst immer besser! 🥉";
-    return "Tuka, nicht traurig sein! Wir üben das einfach nochmal zusammen. 🦁";
+    if (grade === 1) return `${childName}, du bist eine echte Mathe-Königin! 👑🥇`;
+    if (grade === 2) return `${childName}, super gemacht! Nur ein kleiner Schritt bis zur 1! 🥈`;
+    if (grade === 3) return `Gut gemacht, ${childName}! Du wirst immer besser! 🥉`;
+    return `${childName}, nicht traurig sein! Wir üben das einfach nochmal zusammen. 🦁`;
   };
 
   return (
@@ -42,7 +48,7 @@ const Results: React.FC<ResultsProps> = ({ results, onRestart, onPracticeAgain, 
         
         <div className="flex justify-center items-center space-x-6">
           <div className="bg-white px-8 py-4 rounded-3xl shadow-xl border-b-8 border-green-100 flex flex-col items-center">
-            <span className="text-gray-400 font-bold uppercase text-xs tracking-widest">Tukas Note</span>
+            <span className="text-gray-400 font-bold uppercase text-xs tracking-widest">{possessive} Note</span>
             <span className={`text-6xl font-kids ${colorClass}`}>{grade}</span>
           </div>
           <div className="bg-white px-8 py-4 rounded-3xl shadow-xl border-b-8 border-yellow-100 flex flex-col items-center">
@@ -57,7 +63,7 @@ const Results: React.FC<ResultsProps> = ({ results, onRestart, onPracticeAgain, 
       <div className="bg-white rounded-[2rem] shadow-2xl p-8 border-4 border-pink-50">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-2xl font-kids text-gray-800 flex items-center">
-            <span className="mr-3">🧐</span> Tukas Analyse:
+            <span className="mr-3">🧐</span> {possessive} Analyse:
           </h3>
           {wrongCount > 0 && (
             <button 
@@ -86,7 +92,7 @@ const Results: React.FC<ResultsProps> = ({ results, onRestart, onPracticeAgain, 
                         Richtig: {item.problem.answer}
                       </p>
                       <div className="bg-white p-4 rounded-xl border border-red-100 text-sm text-gray-600 leading-relaxed shadow-sm">
-                        <span className="font-bold text-pink-500 mr-1">Tipp für Tuka:</span>
+                        <span className="font-bold text-pink-500 mr-1">Tipp für {childName}:</span>
                         {item.problem.explanation}
                       </div>
                     </div>

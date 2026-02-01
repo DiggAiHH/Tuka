@@ -12,10 +12,24 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ initialProfile, onSav
     const [name, setName] = useState(initialProfile?.name || '');
     const [birthday, setBirthday] = useState(initialProfile?.birthday || '');
     const [language, setLanguage] = useState(initialProfile?.language || '');
+    const [gender, setGender] = useState<UserProfile['gender']>(initialProfile?.gender || 'girl');
+
+    const today = new Date();
+    const maxBirthdayDate = new Date(today);
+    maxBirthdayDate.setFullYear(maxBirthdayDate.getFullYear() - 3);
+    const maxBirthday = maxBirthdayDate.toISOString().slice(0, 10);
+
+    const tooYoung = (() => {
+        if (!birthday) return true;
+        const b = new Date(birthday);
+        if (Number.isNaN(b.getTime())) return true;
+        return b > maxBirthdayDate;
+    })();
 
     const handleSave = () => {
         if (!name.trim()) return;
-        const newProfile: UserProfile = { name, birthday, language };
+        if (tooYoung) return;
+        const newProfile: UserProfile = { name, birthday, language, gender };
         saveProfile(newProfile);
         onSave(newProfile);
         onClose();
@@ -32,9 +46,9 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ initialProfile, onSav
                 </button>
 
                 <div className="text-center mb-6">
-                    <div className="text-6xl mb-4">👧</div>
+                    <div className="text-6xl mb-4">{gender === 'boy' ? '👦' : '👧'}</div>
                     <h2 className="text-2xl font-kids text-blue-600">Dein Profil</h2>
-                    <p className="text-gray-500 text-sm">Damit Tuka dich kennt!</p>
+                    <p className="text-gray-500 text-sm">Damit wir dich richtig ansprechen können.</p>
                 </div>
 
                 <div className="space-y-4">
@@ -50,13 +64,39 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ initialProfile, onSav
                     </div>
 
                     <div>
+                        <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 ml-1">Bist du ein Mädchen oder ein Junge?</label>
+                        <div className="grid grid-cols-2 gap-3">
+                            <button
+                                type="button"
+                                onClick={() => setGender('girl')}
+                                className={`px-4 py-3 rounded-xl border-2 font-bold transition-all active:scale-95 ${gender === 'girl' ? 'bg-pink-100 border-pink-300 text-pink-900' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'}`}
+                            >
+                                👧 Mädchen
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setGender('boy')}
+                                className={`px-4 py-3 rounded-xl border-2 font-bold transition-all active:scale-95 ${gender === 'boy' ? 'bg-blue-100 border-blue-300 text-blue-900' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'}`}
+                            >
+                                👦 Junge
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
                         <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 ml-1">Wann hast du Geburtstag?</label>
                         <input
                             type="date"
                             value={birthday}
                             onChange={(e) => setBirthday(e.target.value)}
+                            max={maxBirthday}
                             className="w-full bg-pink-50 border-2 border-pink-100 rounded-xl px-4 py-3 font-bold text-pink-900 focus:border-pink-400 focus:outline-none"
                         />
+                        {tooYoung && (
+                            <p className="mt-2 text-xs font-bold text-red-600">
+                                Diese App ist erst ab 3 Jahren geeignet. Bitte wähle einen Geburtstag spätestens am {maxBirthday}.
+                            </p>
+                        )}
                     </div>
 
                     <div>
@@ -79,7 +119,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ initialProfile, onSav
 
                     <button
                         onClick={handleSave}
-                        disabled={!name.trim()}
+                        disabled={!name.trim() || tooYoung}
                         className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-kids text-xl py-4 rounded-2xl shadow-lg mt-4 transition-all active:scale-95"
                     >
                         Speichern ✅

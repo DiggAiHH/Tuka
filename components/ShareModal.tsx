@@ -12,10 +12,8 @@ const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  if (!isOpen) return null;
-
-  const url = "https://mathe-heldin-app.netlify.app";
-  const shareText = "Hallo! Hier ist Tukas tolle Mathe-App zum Üben. Probier sie doch auch mal aus! ✨";
+  const url = window.location.origin;
+  const shareText = "Hallo! Hier ist Tukas Mathe-Welt zum Üben. Probier sie doch auch mal aus! ✨";
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`;
 
   const copyToClipboard = () => {

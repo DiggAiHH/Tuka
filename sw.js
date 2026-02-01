@@ -1,5 +1,5 @@
 
-const CACHE_NAME = 'mathe-heldin-cache-v17';
+const CACHE_NAME = 'tukas-cache-v17';
 self.addEventListener('install', (event) => {
   self.skipWaiting();
 });

@@ -1,21 +1,26 @@
 
 import React, { useState } from 'react';
-import { DifficultyLevel } from '../types';
+import { DifficultyLevel, UserProfile } from '../types';
 
 interface LevelMapProps {
   topic: string;
   unlockedLevels: DifficultyLevel[];
   onSelectLevel: (level: DifficultyLevel) => void;
+  userProfile?: UserProfile;
 }
 
-const LevelMap: React.FC<LevelMapProps> = ({ topic, unlockedLevels, onSelectLevel }) => {
+const LevelMap: React.FC<LevelMapProps> = ({ topic, unlockedLevels, onSelectLevel, userProfile }) => {
   const [selectedForConfirm, setSelectedForConfirm] = useState<DifficultyLevel | null>(null);
+
+  const firstName = userProfile?.name ? userProfile.name.split(' ')[0] : '';
+  const childName = firstName || 'Tuka';
+  const possessive = `${childName}s`;
 
   const levels = [
     { id: DifficultyLevel.LEICHT, icon: "🌱", label: "Leicht", color: "bg-green-400", borderColor: "border-green-600" },
     { id: DifficultyLevel.MITTEL, icon: "🌿", label: "Mittel", color: "bg-yellow-400", borderColor: "border-yellow-600" },
     { id: DifficultyLevel.SCHWER, icon: "🌳", label: "Schwer", color: "bg-orange-500", borderColor: "border-orange-700" },
-    { id: DifficultyLevel.PRUEFUNG, icon: "🏆", label: "Tukas Prüfung", color: "bg-purple-600", borderColor: "border-purple-800" }
+    { id: DifficultyLevel.PRUEFUNG, icon: "🏆", label: `${possessive} Prüfung`, color: "bg-purple-600", borderColor: "border-purple-800" }
   ];
 
   const currentLevelData = levels.find(l => l.id === selectedForConfirm);
@@ -23,9 +28,9 @@ const LevelMap: React.FC<LevelMapProps> = ({ topic, unlockedLevels, onSelectLeve
   return (
     <div className="space-y-12 py-6 relative">
       <div className="text-center space-y-2">
-        <h2 className="text-sm uppercase tracking-widest text-pink-500 font-bold tracking-widest">Tukas Lernreise</h2>
+        <h2 className="text-sm uppercase tracking-widest text-pink-500 font-bold tracking-widest">{possessive} Lernreise</h2>
         <h3 className="text-3xl font-kids text-blue-800">{topic}</h3>
-        <p className="text-gray-500">Tuka, schlage alle Level für deine 1!</p>
+        <p className="text-gray-500">{childName}, schlage alle Level für deine 1!</p>
       </div>
 
       <div className="relative flex flex-col items-center space-y-12">
@@ -72,7 +77,7 @@ const LevelMap: React.FC<LevelMapProps> = ({ topic, unlockedLevels, onSelectLeve
             </div>
             
             <div className="space-y-2">
-              <h3 className="text-2xl font-kids text-gray-800">Tuka, bist du bereit?</h3>
+              <h3 className="text-2xl font-kids text-gray-800">{childName}, bist du bereit?</h3>
               <p className="text-gray-500">Möchtest du das Level <span className="font-bold text-pink-600">"{currentLevelData.label}"</span> jetzt starten?</p>
             </div>
 
@@ -84,7 +89,7 @@ const LevelMap: React.FC<LevelMapProps> = ({ topic, unlockedLevels, onSelectLeve
                 }}
                 className={`${currentLevelData.color} text-white font-kids text-xl py-4 rounded-2xl shadow-lg hover:brightness-110 active:scale-95 transition-all border-b-4 ${currentLevelData.borderColor}`}
               >
-                Ja, Tuka schafft das! 🚀
+                Ja, {childName} schafft das! 🚀
               </button>
               <button
                 onClick={() => setSelectedForConfirm(null)}

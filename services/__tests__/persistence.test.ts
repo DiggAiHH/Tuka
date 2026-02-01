@@ -25,7 +25,7 @@ describe('persistence', () => {
   test('saveProfile and loadProfile roundtrip', () => {
     const profile: UserProfile = { name: 'Tuka', birthday: '2016-02-01', language: 'de' };
     saveProfile(profile);
-    expect(loadProfile()).toEqual(profile);
+    expect(loadProfile()).toEqual({ ...profile, gender: 'girl' });
   });
 
   test('saveHistory prepends and caps at 50', () => {

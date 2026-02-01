@@ -6,10 +6,13 @@ export enum DifficultyLevel {
   PRUEFUNG = 'Prüfung'
 }
 
+export type ChildGender = 'girl' | 'boy';
+
 export interface UserProfile {
   name: string;
   birthday: string;
   language?: string; // e.g. 'en', 'tr', 'ar'
+  gender?: ChildGender;
 }
 
 export interface MathProblem {
@@ -40,5 +43,8 @@ export enum AppState {
   RESULTS = 'RESULTS',
   KANGAROO = 'KANGAROO',
   CORRECTION = 'CORRECTION',
-  GUIDE = 'GUIDE'
+  GUIDE = 'GUIDE',
+  WHATS_NEW = 'WHATS_NEW',
+  PRIVACY = 'PRIVACY',
+  PARENT = 'PARENT'
 }

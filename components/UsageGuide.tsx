@@ -11,7 +11,7 @@ const UsageGuide: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 flex-shrink-0">
                     <div className="flex justify-between items-start mb-4">
                         <h2 className="text-2xl font-kids text-white">
-                            {tab === 'guide' ? '📚 Schritt für Schritt' : '🌍 Warum Mathe-Heldin?'}
+                            {tab === 'guide' ? '📚 Schritt für Schritt' : '🌍 Warum Tukas Mathe-Welt?'}
                         </h2>
                         <button
                             onClick={onClose}
@@ -108,7 +108,7 @@ const UsageGuide: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                                     <h3 className="text-lg text-gray-800 font-bold mb-1">Hausaufgabe hochladen</h3>
                                     <p className="text-gray-600 text-sm">
                                         Klicke auf die Kamera 📸 im Hauptmenü. Fotografiere dein Blatt.
-                                        DigitalTuka hilft dir beim Lösen!
+                                        Tukas Mathe-Welt hilft dir beim Lösen!
                                     </p>
                                 </div>
                             </section>

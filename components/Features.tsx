@@ -13,7 +13,7 @@ const Features: React.FC<FeaturesProps> = ({ onClose }) => {
                 {/* Header */}
                 <div className="bg-gradient-to-r from-purple-500 to-indigo-600 p-8 text-white text-center sticky top-0 z-10">
                     <h2 className="text-3xl font-kids mb-2">Was ist neu? ✨</h2>
-                    <p className="opacity-90 font-medium">Deine Vorteile in der Mathe-Heldin App!</p>
+                    <p className="opacity-90 font-medium">Neuigkeiten & Vorteile in Tukas Mathe-Welt!</p>
                     <button
                         onClick={onClose}
                         className="absolute top-4 right-4 bg-white/20 hover:bg-white/30 rounded-full w-10 h-10 flex items-center justify-center text-xl transition-all"
@@ -73,7 +73,7 @@ const Features: React.FC<FeaturesProps> = ({ onClose }) => {
                         <div>
                             <h3 className="text-xl font-bold text-gray-800 mb-2">Spaß beim Lernen</h3>
                             <p className="text-gray-600 leading-relaxed">
-                                Sammle Konfetti, feiere Erfolge und werde zur echten Mathe-Heldin. Lernen muss nicht langweilig sein!
+                                Sammle Konfetti, feiere Erfolge und hab Spaß am Lernen. Lernen muss nicht langweilig sein!
                             </p>
                         </div>
                     </div>

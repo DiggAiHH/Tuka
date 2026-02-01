@@ -7,7 +7,7 @@ import { SUPPORTED_LANGUAGES, getTranslation, Language } from '../services/trans
 interface LearningSessionProps {
   problems: MathProblem[];
   topic: string;
-  onComplete: () => void;
+  onComplete: (summary?: { correct: number; total: number; wrongProblemIds: string[] }) => void;
   userProfile?: UserProfile;
   onUpdateProfile?: (profile: UserProfile) => void;
 }
@@ -15,6 +15,8 @@ interface LearningSessionProps {
 const LearningSession: React.FC<LearningSessionProps> = ({ problems, topic, onComplete, userProfile, onUpdateProfile }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [localProblems, setLocalProblems] = useState<MathProblem[]>(problems);
+
+  const [sessionHistory, setSessionHistory] = useState<{ problemId: string; isCorrect: boolean }[]>([]);
 
   const [userAnswer, setUserAnswer] = useState('');
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
@@ -85,10 +87,18 @@ const LearningSession: React.FC<LearningSessionProps> = ({ problems, topic, onCo
   };
 
   const nextProblem = () => {
+    const problemId = currentProblem?.id || `${currentIndex}`;
+    const resultIsCorrect = isCorrect === true;
+    const nextHistory = [...sessionHistory, { problemId, isCorrect: resultIsCorrect }];
+    setSessionHistory(nextHistory);
+
     if (currentIndex < problems.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      onComplete();
+      const correct = nextHistory.filter(h => h.isCorrect).length;
+      const total = problems.length;
+      const wrongProblemIds = nextHistory.filter(h => !h.isCorrect).map(h => h.problemId);
+      onComplete({ correct, total, wrongProblemIds });
     }
   };
 

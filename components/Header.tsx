@@ -6,9 +6,11 @@ interface HeaderProps {
   onShareClick: () => void;
   onProfileClick?: () => void;
   profileName?: string | null;
+  profileGender?: 'girl' | 'boy' | null;
 }
 
-const Header: React.FC<HeaderProps> = ({ onHomeClick, onShareClick, onProfileClick, profileName }) => {
+const Header: React.FC<HeaderProps> = ({ onHomeClick, onShareClick, onProfileClick, profileName, profileGender }) => {
+  const emoji = profileGender === 'boy' ? '👦' : '👧';
   return (
     <header className="bg-white shadow-md p-4 sticky top-0 z-50">
       <div className="container mx-auto flex flex-wrap justify-between items-center gap-y-3">
@@ -40,7 +42,7 @@ const Header: React.FC<HeaderProps> = ({ onHomeClick, onShareClick, onProfileCli
             title="Mein Profil"
           >
             <span className="text-blue-600 font-semibold hidden xs:inline">Hallo {profileName || 'Tuka'}! 👋</span>
-            <span className="text-2xl">👧</span>
+            <span className="text-2xl">{emoji}</span>
           </button>
         </div>
       </div>
