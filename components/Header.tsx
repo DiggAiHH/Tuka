@@ -5,9 +5,10 @@ interface HeaderProps {
   onHomeClick: () => void;
   onShareClick: () => void;
   onProfileClick?: () => void;
+  profileName?: string | null;
 }
 
-const Header: React.FC<HeaderProps> = ({ onHomeClick, onShareClick, onProfileClick }) => {
+const Header: React.FC<HeaderProps> = ({ onHomeClick, onShareClick, onProfileClick, profileName }) => {
   return (
     <header className="bg-white shadow-md p-4 sticky top-0 z-50">
       <div className="container mx-auto flex flex-wrap justify-between items-center gap-y-3">
@@ -38,7 +39,7 @@ const Header: React.FC<HeaderProps> = ({ onHomeClick, onShareClick, onProfileCli
             className="flex items-center space-x-2 bg-blue-50 px-4 py-2 rounded-full border border-blue-100 hover:bg-blue-100 transition-colors active:scale-95"
             title="Mein Profil"
           >
-            <span className="text-blue-600 font-semibold hidden xs:inline">Hallo Tuka! 👋</span>
+            <span className="text-blue-600 font-semibold hidden xs:inline">Hallo {profileName || 'Tuka'}! 👋</span>
             <span className="text-2xl">👧</span>
           </button>
         </div>
